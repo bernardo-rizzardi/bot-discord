@@ -10,9 +10,9 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 produtos = [
-    {'id': 1, 'nome': 'Camiseta', 'preco': 49.90},
-    {'id': 2, 'nome': 'Boné', 'preco': 29.90},
-    {'id': 3, 'nome': 'Caneca', 'preco': 19.90},
+    {'id': 1, 'nome': 'Camiseta', 'preco': 49.90, 'imagem': 'https://i.imgur.com/Mbws73a.png'},
+    {'id': 2, 'nome': 'Boné', 'preco': 29.90, 'imagem': 'https://i.imgur.com/nI5Q4o6.png'},
+    {'id': 3, 'nome': 'Caneca', 'preco': 19.90, 'imagem': 'https://i.imgur.com/TCqcRFI.png'},
 ]
 
 carrinho = dict()
@@ -27,10 +27,11 @@ async def on_message(message):
         return
 
     if message.content == '!produtos':
-        resposta = '**Produtos disponíveis:**\n'
         for p in produtos:
-            resposta += f"ID {p['id']} — {p['nome']} — R$ {p['preco']:.2f}\n"
-        await message.channel.send(resposta)
+            embed = discord.Embed(title=f"{p['nome']}", color=0x00ff00)
+            embed.add_field(name="Valor", value=f"R$ {p['preco']:.2f}")
+            embed.set_image(url=p['imagem'])
+            await message.channel.send(embed=embed)
 
     if message.content.startswith('!adicionar'):
         mensagem = message.content.split()
