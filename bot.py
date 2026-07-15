@@ -60,4 +60,20 @@ async def on_message(message):
         resposta += f"Preço total: R$ {valor:.2f}\n"
         await message.channel.send(resposta)
 
+    if message.content == '!finalizar':
+        userID = message.author.id
+        if userID not in carrinho:
+            await message.channel.send("Seu carrinho está vazio!\n")
+            return
+        
+        valor = 0
+        lista = carrinho[userID]
+        for i in lista:
+            valor += produtos[i-1]['preco']
+
+        del carrinho[userID]
+
+        resposta = f"Preço final: {valor:.2f}. Carrinho esvaziado!\n"
+        await message.channel.send(resposta)
+
 client.run(TOKEN)
