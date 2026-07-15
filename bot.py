@@ -76,4 +76,22 @@ async def on_message(message):
         resposta = f"Preço final: {valor:.2f}. Carrinho esvaziado!\n"
         await message.channel.send(resposta)
 
+    if message.content.startswith('!remover'):
+        mensagem = message.content.split()
+        produtoId = int(mensagem[1])
+        userID = message.author.id
+        if userID not in carrinho:
+            await message.channel.send("Seu carrinho está vazio!\n")
+            return
+        
+        lista = carrinho[userID]
+        if produtoId not in lista:
+            await message.channel.send("Produto não encontrado no seu carrinho!\n")
+            return
+        
+        while produtoId in lista:
+            lista.remove(produtoId)
+        
+        await message.channel.send("Produto(s) removido(s)!\n")
+
 client.run(TOKEN)
